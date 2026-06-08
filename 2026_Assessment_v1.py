@@ -69,7 +69,7 @@ def num_check(question, num_type="float", exit_code=None):
 
         # check for exit code and return it if entered
         if response == exit_code:
-            return response
+            break
 
         # check datatype is correct and that number
         # is more than zero
@@ -162,9 +162,55 @@ def currency(x):
     """Formats numbers as currency ($#.##)"""
     return "${:.2f}".format(x)
 
+
+def clean_filename(raw_filename):
+    """Check filename has not illegal characters and is not too long"""
+
+    # assume filename is OK
+    valid_filename = True
+    error = ""
+
+    while True:
+
+        # replace spaces with underscores
+        raw_filename = raw_filename.replace(" ", "_")
+
+        # check for valid length
+        if len(raw_filename) >= 20:
+            valid_filename = False
+            error = ("Oops - your product name / filename is too long.  \n"
+                     "Please provide an alternate filename (<= 19 characters) \n"
+                     "or press <enter> to default to FRC_yyyy_mm_ddd")
+
+        # iterate through filename and check for invalid characters
+        for letter in raw_filename:
+            if letter.isalnum() is False and letter != "_":
+                valid_filename = False
+                error = ("I can't use the product name / proposed filename \n"
+                         "as it has illegal characters.  Please \n"
+                         "enter an alternate name for the first part \n"
+                         "of the file or press <enter> to default to FRC_yyyy_mm_dd")
+                break
+
+        if valid_filename is False:
+            print(error)
+            raw_filename = input("\nPlease enter an alternate name for the start of the file: ")
+
+            # reset valid_filename so that it's new name can be checked.
+            valid_filename = True
+
+            # put in default filename if users press <enter>
+            if raw_filename == "":
+                raw_filename = "FRC"
+
+        else:
+            return raw_filename
+
+
 # Main Routine
 
-# assume we have no fixed expenses for now
+# stuff 'n' things
+
 fixed_subtotal = 0
 fixed_panda_string = ""
 
@@ -180,9 +226,11 @@ if want_instructions == "yes":
 print()
 
 # Get product details...
-product_name = not_blank("Product Name: ")
-quantity_made = num_check("Quantity being ordered: ", "integer")
-price = num_check("Price: $", "integer")
+while True:
+    product_name = not_blank("Product Name: ")
+    quantity_made = num_check("Quantity being ordered: ", "integer","xxx")
+    price = num_check("Price: $", "float", "xxx")
+    continue
 
 price_per_item = quantity_made * price
 print(f"The total price of {quantity_made} {product_name}'s is $",price_per_item)
