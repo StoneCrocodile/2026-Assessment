@@ -32,11 +32,13 @@ def instructions():
     print(make_statement("Instructions", "ℹ️"))
 
     print('''This program will ask you for... 
+    - the program is made to compare 2 items at a time.
     - The name of the products you are comparing 
     - How many items you plan on comparing
     - The costs for each of the products you are comparing
       (variable expenses)
-    - the unit of the item (kg,L, or per item)
+    - the unit of the item (kg,L, or each)
+
 
 The data will be put into a table and tell you which item is 
 the cheaper option 
@@ -115,11 +117,25 @@ while True:
     if get_budget <= 9:
         print("Budget Must Be $10 Or More")
         continue
+    break
 
-    # Get items
-    print("Lets Get Your Items To Compare...")
+# Get items
+print("Lets Get Your Two Items To Compare...")
+get_items = not_blank("Item name: ")
+unit_weight = string_check("Unit Of Measurement for Item: ","Kg, g, ml, L, or each")
+get_weight = num_check("Total Weight Or Amount Of Items:", "float")
+item_cost = num_check("Cost Of Items (per item or per kg / L):", "float")
+total_cost_calc = get_weight * item_cost
+total_cost = total_cost_calc
 
-    get_items = not_blank("Item name: ")
-    unit_weight = string_check("Unit Of Measurement for Item: ","Kg, g, ml, L, or each")
-    get_weight = num_check("Weight Of Items total", "float")
-    item_cost = num_check("Cost Of Items (per item or per kg / L)", "float")
+get_items_2 = not_blank("Second Item name:")
+unit_weight_2 = string_check("Unit Of Measurement for Second Item: ", "Kg, g, ml, L, or each")
+get_weight_2 = num_check("Total Weight Or Amount Of Items:", "float")
+item_cost_2 = num_check("Cost Of Items (per item or per kg / L):", "float")
+total_cost_calc_2 = get_weight_2 * item_cost_2
+total_cost_2 = total_cost_calc_2
+
+print("The Total Cost For Your First Items is:", total_cost)
+print("The Total Cost For Your Second Items is:", total_cost_2)
+
+
