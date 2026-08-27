@@ -124,33 +124,57 @@ while True:
         continue
     break
 print("Lets Get Your Two Items To Compare...")
+# lists for details
+all_names = []
+all_weights = []
+all_costs = []
 
+
+dict_for_stuff = {
+    'names': all_names,
+    'weights': all_weights,
+    'costs': all_costs
+}
 while True:
-    # lists for details
-    all_names = []
-    all_weights =[]
-    all_costs = []
-
-    dict_for_stuff = {
-        'names': all_names,
-        'weights': all_weights,
-        'costs': all_costs
-    }
     # Get items
     names = not_blank("Item name: ")
     if names == 'xxx':
         break
     weights = string_check("Unit Of Measurement for Item (for kg use k and ml use m):", "kg, g, ml, l, or each")
-    get_weight = num_check("Total Weight Or Amount Of Items:", "float")
+    get_weight = num_check(f"Total Weight Or Amount Of {names}:", "float")
     costs = num_check("Cost Of Items (per item or per kg / L):", "float")
+
+    # converting g to kg then converting it to $/kg
     if weights == 'g':
         cost_kg = get_weight / 1000
+        cost_kg_b = costs / cost_kg
+        all_costs = cost_kg_b
+        print(f"Cost Per Kg of {names}: ${cost_kg}/Per Kilo")
+
+    # converting m to l then converting it to $/l
     if weights == 'm':
         cost_l = get_weight / 1000
-        print(f"Cost Per Liter: ${names}/Per Liter")
+        costs_l_b = costs / cost_l
+        all_costs = costs_l_b
+        print(f"Cost Per Liter of {names}: ${cost_l}/Per Liter")
+
+    #converting to $/kg
+    if weights == 'k':
+        cost_per_kg = costs / get_weight
+        costs = cost_per_kg
+        print(f"Cost Per  of {names}: ${cost_per_kg}/ Per Kilo")
+
+    # convert to $/l
+    if weights == 'l':
+        cost_per_l = costs / get_weight
+        costs = cost_per_l
+        print(f"Cost Per Liter of {names}: ${cost_per_l}/ Per Liter")
+
+    # IDK what this does but I need it :)
 
     all_names.append(names)
     all_weights.append(weights)
     all_costs.append(costs)
 
 calculations_frame = pandas.DataFrame(dict_for_stuff)
+print(calculations_frame)
