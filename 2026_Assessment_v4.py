@@ -138,43 +138,54 @@ dict_for_stuff = {
 while True:
     # Get items
     names = not_blank("Item name: ")
+    print()
     if names == 'xxx':
         break
     weights = string_check("Unit Of Measurement for Item (for kg use k and ml use m):", "kg, g, ml, l, or each")
-    get_weight = num_check(f"Total Weight Or Amount Of {names}:", "float")
+    print()
+    get_weight = num_check(f"Total Weight Or Amount Of Items:", "float")
+    print()
     costs = num_check("Cost Of Items (per item or per kg / L):", "float")
-
+    print()
     # converting g to kg then converting it to $/kg
     if weights == 'g':
         cost_kg = get_weight / 1000
         cost_kg_b = costs / cost_kg
-        all_costs = cost_kg_b
-        print(f"Cost Per Kg of {names}: ${cost_kg}/Per Kilo")
+        costs = cost_kg_b
+        print(f"Cost Per Kg Of {names}: ${cost_kg_b}/Per Kilo")
+        print()
 
     # converting m to l then converting it to $/l
     if weights == 'm':
         cost_l = get_weight / 1000
         costs_l_b = costs / cost_l
-        all_costs = costs_l_b
-        print(f"Cost Per Liter of {names}: ${cost_l}/Per Liter")
+        costs = costs_l_b
+        print(f"Cost Per Liter Of {names}: ${costs_l_b}/Per Liter")
+        print()
 
     #converting to $/kg
     if weights == 'k':
         cost_per_kg = costs / get_weight
         costs = cost_per_kg
-        print(f"Cost Per  of {names}: ${cost_per_kg}/ Per Kilo")
+        print(f"Cost Per Kilo Of {names}: ${cost_per_kg}/ Per Kilo")
+        print()
 
     # convert to $/l
     if weights == 'l':
         cost_per_l = costs / get_weight
         costs = cost_per_l
         print(f"Cost Per Liter of {names}: ${cost_per_l}/ Per Liter")
+        print()
 
     # IDK what this does but I need it :)
 
     all_names.append(names)
     all_weights.append(weights)
     all_costs.append(costs)
-
 calculations_frame = pandas.DataFrame(dict_for_stuff)
-print(calculations_frame)
+sorted_calculations_frame = calculations_frame.sort_values(['costs'], ascending=True)
+print(sorted_calculations_frame)
+print()
+print("Your Cheapest option is:")
+print()
+print(sorted_calculations_frame[:1])
